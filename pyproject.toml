@@ -1,6 +1,6 @@
 [project]
 name = "jet"
-version = "0.1.0"
+version = "0.1.1"
 description = "BOSS 岗位只读插件 + 本机判断"
 readme = "README.md"
 requires-python = ">=3.12"

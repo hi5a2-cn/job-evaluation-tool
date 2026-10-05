@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const manifestPath = path.resolve(__dirname, "../manifest.json");
+const pyprojectPath = path.resolve(__dirname, "../../pyproject.toml");
 
 test("manifest configuration and security boundaries", () => {
   const content = fs.readFileSync(manifestPath, "utf-8");
@@ -14,7 +15,10 @@ test("manifest configuration and security boundaries", () => {
 
   assert.equal(manifest.manifest_version, 3);
   assert.equal(manifest.name, "Jet");
-  assert.equal(manifest.version, "0.1.0");
+  // 插件和服务端同一个版本号（发版时两处一起改）
+  const pyVersion = fs.readFileSync(pyprojectPath, "utf-8").match(/^version = "([^"]+)"/m)[1];
+  assert.match(manifest.version, /^\d+\.\d+\.\d+$/);
+  assert.equal(manifest.version, pyVersion);
 
   // host_permissions 恰好是这两项
   const expectedHosts = ["https://*.zhipin.com/*", "http://127.0.0.1/*"];
