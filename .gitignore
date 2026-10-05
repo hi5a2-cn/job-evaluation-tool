@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+
+# 本地环境与密钥
+.env
+.venv/
+
+# Python 缓存
+__pycache__/
+.pytest_cache/
+
+# 运行数据与数据库
+data/
+*.db
+*.db-*
+*.sqlite3
+
+# Claude Code 本机设置
+.claude/settings.local.json
+
+# Node 依赖
+node_modules/
+
+# 发版用的本地敏感词表（含个人信息，不提交）
+.release/

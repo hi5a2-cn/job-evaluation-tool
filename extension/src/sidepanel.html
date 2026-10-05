@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Jet 侧边栏</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 12px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #333333;
+      background-color: #f7f9fa;
+    }
+    .top-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .top-banner.status-paired {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #c8e6c9;
+    }
+    .top-banner.status-warning {
+      background-color: #fff8e1;
+      color: #f57f17;
+      border: 1px solid #ffe082;
+    }
+    .top-banner.status-error {
+      background-color: #ffebee;
+      color: #c62828;
+      border: 1px solid #ffcdd2;
+    }
+    .notice-bar {
+      display: none;
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      background-color: #fff3e0;
+      color: #e65100;
+      border: 1px solid #ffe0b2;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+    .card {
+      position: relative;
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+    .card-mask-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.94);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 16px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #555555;
+      z-index: 100;
+      border-radius: 8px;
+      pointer-events: auto;
+    }
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 0;
+      margin-bottom: 10px;
+      color: #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .empty-state {
+      color: #888888;
+      font-size: 13px;
+      padding: 8px 0;
+      text-align: center;
+    }
+    .job-header-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .job-title {
+      font-weight: 600;
+      color: #222222;
+      flex: 1;
+      min-width: 120px;
+      word-break: break-word;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+    .badge-green {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #c8e6c9;
+    }
+    .badge-blue {
+      background-color: #e3f2fd;
+      color: #1565c0;
+      border: 1px solid #bbdefb;
+    }
+    .badge-yellow {
+      background-color: #fffde7;
+      color: #f57f17;
+      border: 1px solid #fff59d;
+    }
+    .badge-red {
+      background-color: #ffebee;
+      color: #c62828;
+      border: 1px solid #ffcdd2;
+    }
+    .badge-gray {
+      background-color: #f5f5f5;
+      color: #616161;
+      border: 1px solid #e0e0e0;
+    }
+    .badge.stale {
+      opacity: 0.7;
+      border-style: dashed;
+    }
+    .badge-stale {
+      background-color: #fff3e0;
+      color: #ef6c00;
+      border: 1px dashed #ffe0b2;
+    }
+    .job-reason {
+      color: #555555;
+      font-size: 12px;
+      margin-top: 6px;
+      line-height: 1.4;
+      background: #fafafa;
+      padding: 6px 8px;
+      border-radius: 4px;
+      border-left: 3px solid #1976d2;
+      word-break: break-word;
+    }
+    .job-notice {
+      color: #666666;
+      font-size: 12px;
+      margin-top: 6px;
+      line-height: 1.4;
+      background: #fafafa;
+      padding: 6px 8px;
+      border-radius: 4px;
+      border-left: 3px solid #1976d2;
+      word-break: break-word;
+    }
+    .job-resume-suggestion {
+      margin-top: 6px;
+      margin-bottom: 6px;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    .job-resume-tag {
+      display: inline-block;
+      background: #f0f4f8;
+      border: 1px solid #d0dbe5;
+      border-radius: 4px;
+      padding: 3px 8px;
+      cursor: pointer;
+      user-select: none;
+      color: #1976d2;
+      font-weight: 500;
+      max-width: 100%;
+      box-sizing: border-box;
+      word-break: break-all;
+    }
+    .job-resume-tag:hover {
+      background: #e3edf7;
+    }
+    .job-resume-reason {
+      margin-top: 4px;
+      padding: 6px 8px;
+      background: #fafafa;
+      border-left: 2px solid #1976d2;
+      border-radius: 2px;
+      color: #555555;
+      font-size: 12px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+    .job-resume-highlight {
+      background-color: #fff3e0;
+      border: 1px solid #ffe0b2;
+      border-radius: 6px;
+      padding: 8px 10px;
+      margin-top: 6px;
+      margin-bottom: 8px;
+    }
+    .job-resume-highlight-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #e65100;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+    .job-resume-highlight-reason {
+      margin-top: 4px;
+      font-size: 12px;
+      color: #795548;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+    .job-resume-hint {
+      background-color: #fff8e1;
+      border: 1px solid #ffe082;
+      border-radius: 6px;
+      padding: 6px 10px;
+      margin-top: 6px;
+      margin-bottom: 8px;
+      color: #b76e00;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+    .job-time {
+      color: #999999;
+      font-size: 11px;
+      margin-top: 6px;
+    }
+    .job-company {
+      font-size: 12px;
+      color: #666666;
+      margin-top: 2px;
+      margin-bottom: 4px;
+    }
+    .job-hr-block {
+      margin-top: 8px;
+      padding: 8px 10px;
+      background: #f8f9fa;
+      border-radius: 6px;
+      border: 1px solid #eceff1;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .job-hr-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .job-hr-label {
+      font-weight: 600;
+      color: #455a64;
+      font-size: 11px;
+    }
+    .job-hr-actions {
+      display: inline-flex;
+      gap: 8px;
+    }
+    .hr-btn-link {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 11px;
+      color: #1976d2;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .hr-btn-link:hover {
+      color: #0d47a1;
+    }
+    .job-hr-content {
+      color: #37474f;
+      display: block;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+    .job-hr-content.empty {
+      color: #90a4ae;
+      font-style: italic;
+    }
+    .job-hr-edit-area {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .job-hr-textarea {
+      width: 100%;
+      box-sizing: border-box;
+      min-height: 60px;
+      max-height: 140px;
+      padding: 6px 8px;
+      font-size: 12px;
+      border: 1px solid #cfd8dc;
+      border-radius: 4px;
+      resize: vertical;
+      font-family: inherit;
+    }
+    .job-hr-edit-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .job-hr-edit-error {
+      font-size: 11px;
+      color: #d32f2f;
+    }
+    .job-hr-edit-btns {
+      display: inline-flex;
+      gap: 6px;
+      margin-left: auto;
+    }
+    .job-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .job-item {
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .job-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .job-item:first-child {
+      padding-top: 0;
+    }
+    .timing-footer {
+      font-size: 11px;
+      color: #888888;
+      text-align: center;
+      margin-top: 12px;
+      padding: 4px 0;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.15s ease;
+    }
+    .btn-primary {
+      background-color: #1976d2;
+      color: #ffffff;
+    }
+    .btn-primary:hover:not(:disabled) {
+      background-color: #1565c0;
+    }
+    .btn-primary:disabled {
+      background-color: #bdbdbd;
+      color: #ffffff;
+      cursor: not-allowed;
+    }
+    .btn-secondary {
+      background-color: #ffffff;
+      color: #555555;
+      border-color: #d0d7de;
+    }
+    .btn-secondary:hover:not(:disabled) {
+      background-color: #f5f5f5;
+    }
+    .btn-secondary:disabled {
+      color: #999999;
+      cursor: not-allowed;
+    }
+    .chat-attribution {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 8px;
+      padding: 4px 8px;
+      background: #f0f4f8;
+      border-radius: 4px;
+      border-left: 3px solid #1976d2;
+    }
+    .chat-unjudged-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      background-color: #fff3e0;
+      color: #e65100;
+      border: 1px solid #ffe0b2;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .chat-quota-text {
+      font-size: 12px;
+      color: #666666;
+      margin-bottom: 8px;
+    }
+    .chat-action-bar {
+      margin-bottom: 8px;
+    }
+    .chat-status-msg {
+      font-size: 12px;
+      padding: 8px 10px;
+      border-radius: 4px;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+    .chat-status-msg.error {
+      background-color: #ffebee;
+      color: #c62828;
+      border: 1px solid #ffcdd2;
+    }
+    .chat-status-msg.info {
+      background-color: #e3f2fd;
+      color: #1565c0;
+      border: 1px solid #bbdefb;
+    }
+    .chat-consent-modal {
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    .consent-header {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 8px;
+    }
+    .consent-desc {
+      font-size: 12px;
+      color: #555555;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    .consent-fields {
+      margin: 0 0 10px 0;
+      padding-left: 18px;
+      font-size: 12px;
+      color: #444444;
+      line-height: 1.4;
+    }
+    .consent-preview-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #333333;
+      margin-bottom: 4px;
+    }
+    .consent-preview-box {
+      width: 100%;
+      height: 120px;
+      padding: 8px;
+      font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 11px;
+      line-height: 1.4;
+      background-color: #f6f8fa;
+      color: #24292f;
+      border: 1px solid #d0d7de;
+      border-radius: 4px;
+      resize: vertical;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+    }
+    .consent-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+    .chat-mode-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+      margin-bottom: 4px;
+      gap: 8px;
+    }
+    .btn-sm {
+      padding: 2px 8px;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+    .chat-mode-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin: 0;
+    }
+    .chat-mode-basis {
+      font-size: 11px;
+      color: #666666;
+      margin-bottom: 8px;
+      padding: 4px 6px;
+      background: #f5f5f5;
+      border-radius: 4px;
+    }
+    .chat-request-notice {
+      background-color: #fff8e1;
+      color: #b76e00;
+      border: 1px solid #ffe082;
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 4px;
+      margin-bottom: 8px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+    .chat-unanswered-facts-container {
+      margin-bottom: 8px;
+    }
+    .chat-unanswered-fact-notice {
+      background-color: #fff3e0;
+      color: #d84315;
+      border: 1px solid #ffccbc;
+      border-radius: 4px;
+      padding: 6px 8px;
+      font-size: 12px;
+      margin-bottom: 6px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+    .chat-unanswered-fact-notice:last-child {
+      margin-bottom: 0;
+    }
+    .chat-dropped-summary-container {
+      margin-bottom: 8px;
+    }
+    .chat-dropped-summary-item {
+      background-color: #fff8e1;
+      color: #8d6e63;
+      border: 1px solid #ffe082;
+      border-radius: 4px;
+      padding: 6px 8px;
+      font-size: 12px;
+      margin-bottom: 6px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+    .chat-dropped-summary-item:last-child {
+      margin-bottom: 0;
+    }
+    .chat-experience-note {
+      font-size: 11px;
+      color: #e65100;
+      background-color: #fff3e0;
+      border: 1px solid #ffe0b2;
+      border-radius: 4px;
+      padding: 4px 8px;
+      margin-bottom: 8px;
+    }
+    .chat-suggestion-item {
+      padding: 8px;
+      background: #f9fbfd;
+      border: 1px solid #e1e8ed;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+    .chat-suggestion-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+    .chat-suggestion-tone {
+      font-size: 11px;
+      font-weight: 600;
+      color: #1565c0;
+    }
+    .chat-suggestion-text {
+      font-size: 12px;
+      color: #222222;
+      line-height: 1.4;
+      margin-bottom: 4px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .chat-source-note {
+      font-size: 11px;
+      color: #888888;
+    }
+    .chat-questions-section {
+      margin-top: 10px;
+    }
+    .chat-questions-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #333333;
+      margin-top: 8px;
+      margin-bottom: 4px;
+    }
+    .chat-questions-list {
+      margin: 0 0 8px 0;
+      font-size: 12px;
+      color: #444444;
+      line-height: 1.4;
+    }
+    .chat-question-item {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 6px 0;
+      border-bottom: 1px dashed #e0e0e0;
+    }
+    .chat-question-item:last-child {
+      border-bottom: none;
+    }
+    .chat-question-text {
+      flex: 1;
+      font-size: 12px;
+      color: #333333;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+    .chat-msg-count-notice {
+      font-size: 11px;
+      color: #999999;
+      text-align: right;
+      margin-top: 6px;
+    }
+    .jet-status-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 6px 0 10px 0;
+    }
+    .jet-status-btn {
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+      padding: 3px 8px;
+      font-size: 11px;
+      color: #333;
+      cursor: pointer;
+    }
+    .jet-status-btn:hover:not(:disabled) {
+      background: #e8e8e8;
+    }
+    .jet-status-btn.active {
+      background: #1976d2;
+      border-color: #1976d2;
+      color: #ffffff;
+      font-weight: 500;
+    }
+    .jet-status-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .jet-status-btn-tip {
+      font-size: 11px;
+      color: #d32f2f;
+      margin-left: 4px;
+    }
+  </style>
+
+</head>
+<body>
+  <!-- 顶部操作栏 (T054 / FR-062) -->
+  <div class="top-action-bar" style="display: flex; justify-content: flex-end; margin-bottom: 8px;">
+    <button id="btn-open-myjobs" class="btn btn-secondary btn-sm" type="button">我的岗位库</button>
+  </div>
+
+  <!-- 顶部额度/状态栏 -->
+  <div id="quota-banner" class="top-banner status-warning">
+    <span id="quota-text">检测中...</span>
+  </div>
+
+  <!-- 页面标记关闭提示 -->
+  <div id="marks-disabled-notice" class="notice-bar">
+    页面标记已关闭，结论只在这里显示
+  </div>
+
+  <!-- 数据发送知情同意界面 (T023 / FR-023, FR-024, T072, T073) -->
+  <div id="chat-consent-modal" class="chat-consent-modal" style="display: none;">
+    <div class="consent-header">数据发送知情同意</div>
+    <div id="consent-auto-send-notice" class="consent-desc" style="color: #b76e00; background-color: #fff8e1; border: 1px solid #ffe082; border-radius: 4px; padding: 6px 8px; margin-bottom: 8px;">
+      开启自动生成时，打开聊天就会自动发送（可以在设置页关闭自动生成）。
+    </div>
+    <div class="consent-desc">Jet 将向大模型发送以下必要数据以生成沟通建议（均已进行本地脱敏，不发送个人姓名与敏感信息）：</div>
+    <ul id="consent-fields-list" class="consent-fields">
+      <li>职位名、公司、城市（不发岗位 ID）</li>
+      <li>Jet 判断结论与风险信号（如有）</li>
+      <li>HR 实际情况（如有，已脱敏）</li>
+      <li>最近已加载的非系统聊天消息（已脱敏）</li>
+      <li>我的资料：目前所在城市（如有填写）</li>
+      <li>我的经历素材（已录入条目）</li>
+      <li>语气规则（8 条）</li>
+    </ul>
+    <div class="consent-preview-title">本次发送脱敏预览（只读）：</div>
+    <textarea id="consent-prompt-preview" class="consent-preview-box" readonly></textarea>
+    <div class="consent-actions">
+      <button id="btn-consent-cancel" class="btn btn-secondary" type="button">取消</button>
+      <button id="btn-consent-agree" class="btn btn-primary" type="button">同意并继续生成</button>
+    </div>
+  </div>
+
+  <!-- HR 沟通助手卡片 (T024 / FR-006, FR-011, FR-016, FR-020) -->
+  <div id="hr-assistant-card" class="card" style="display: none;">
+    <div id="hr-assistant-mask" class="card-mask-overlay" style="display: none;">正在识别当前聊天…</div>
+    <div class="card-title">HR 沟通助手</div>
+    <div id="chat-quota-text" class="chat-quota-text"></div>
+    <div id="chat-attribution" class="chat-attribution" style="display: none;"></div>
+    <div id="chat-no-judgement-notice" class="chat-unjudged-badge" style="display: none;">这个岗位没有 Jet 判断</div>
+    <div class="chat-action-bar">
+      <button id="btn-generate-chat" class="btn btn-primary" type="button">生成沟通建议</button>
+    </div>
+    <div id="chat-status-message" class="chat-status-msg" style="display: none;"></div>
+    <div id="chat-result-container" class="chat-result" style="display: none;"></div>
+  </div>
+
+  <!-- 当前岗位 -->
+  <div id="current-job-card" class="card">
+    <div id="current-job-mask" class="card-mask-overlay" style="display: none;">正在识别当前聊天…</div>
+    <div class="card-title">当前岗位</div>
+    <div id="current-job-empty" class="empty-state">未打开岗位详情</div>
+    <div id="current-job-detail" style="display: none;"></div>
+  </div>
+
+  <!-- 本页已判断过的岗位 -->
+  <div class="card">
+    <div id="list-jobs-title" class="card-title">本页已判断过的岗位（0）</div>
+    <div id="list-jobs-empty" class="empty-state">本页没有已判断过的岗位</div>
+    <ul id="list-jobs-items" class="job-list" style="display: none;"></ul>
+  </div>
+
+  <!-- 底部耗时信息 -->
+  <div id="timing-footer" class="timing-footer" style="display: none;"></div>
+  <div id="status-updated-at" class="timing-footer" style="display: none;"></div>
+
+  <script type="module" src="sidepanel.js"></script>
+</body>
+</html>

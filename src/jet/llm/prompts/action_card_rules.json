@@ -1,0 +1,73 @@
+[
+  {
+    "name": "系统附件简历已发送",
+    "text_contains": [
+      "已发送给Boss",
+      "简历"
+    ],
+    "sender": "我",
+    "marker": "[已发送附件简历]"
+  },
+  {
+    "name": "HR已查看附件简历",
+    "text_contains": "对方已查看了您的附件简历",
+    "sender": "系统",
+    "marker": "[HR 已查看附件简历]"
+  },
+  {
+    "name": "附件简历请求已发送",
+    "body_type": 4,
+    "text_contains": "附件简历请求已发送",
+    "sender": "我",
+    "marker": "[附件简历请求已发送]"
+  },
+  {
+    "name": "附件简历文件卡片",
+    "body_type": 12,
+    "text_contains": "简历",
+    "sender": "我",
+    "marker": "[已发送附件简历]"
+  },
+  {
+    "name": "附件简历文件卡片",
+    "body_type": 12,
+    "text_contains": ".pdf",
+    "sender": "我",
+    "marker": "[已发送附件简历]"
+  },
+  {
+    "name": "附件简历文件卡片",
+    "body_type": 12,
+    "text_contains": ".doc",
+    "sender": "我",
+    "marker": "[已发送附件简历]"
+  },
+  {
+    "name": "附件简历文件卡片",
+    "body_type": 12,
+    "text_contains": ".docx",
+    "sender": "我",
+    "marker": "[已发送附件简历]"
+  },
+  {
+    "name": "附件简历文件卡片",
+    "body_type": 12,
+    "text_contains": ".PDF",
+    "sender": "我",
+    "marker": "[已发送附件简历]"
+  },
+  {
+    "name": "附件简历文件卡片",
+    "body_type": 12,
+    "text_contains": ".DOC",
+    "sender": "我",
+    "marker": "[已发送附件简历]"
+  },
+  {
+    "name": "附件简历文件卡片",
+    "body_type": 12,
+    "text_contains": ".DOCX",
+    "sender": "我",
+    "marker": "[已发送附件简历]"
+  }
+]

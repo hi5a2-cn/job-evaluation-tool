@@ -1,0 +1,6 @@
+{
+  "path": "/web/geek/job",
+  "vue": {
+    "jobList": "invalid_string_not_an_array"
+  }
+}

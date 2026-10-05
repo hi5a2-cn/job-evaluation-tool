@@ -1,0 +1,43 @@
+{
+  "path": "/web/geek/job",
+  "vue": {
+    "jobList": [
+      {
+        "encryptJobId": "mock_job_001",
+        "jobName": "Python后端开发工程师",
+        "salaryDesc": "15-25K·14薪",
+        "cityName": "深圳",
+        "areaDistrict": "南山区",
+        "brandName": "虚构科技A",
+        "jobExperience": "3-5年"
+      },
+      {
+        "encryptJobId": "mock_job_002",
+        "jobName": "高级Python工程师",
+        "salaryDesc": "20-35K",
+        "cityName": "深圳",
+        "areaDistrict": "福田区",
+        "brandName": "虚构软件B",
+        "jobExperience": "5-10年"
+      },
+      {
+        "encryptJobId": "mock_job_003",
+        "jobName": "数据分析师",
+        "salaryDesc": "12-18K",
+        "cityName": "广州",
+        "areaDistrict": "天河区",
+        "brandName": "虚构数据C",
+        "jobExperience": "1-3年"
+      }
+    ],
+    "jobDetail": {
+      "jobInfo": {
+        "encryptId": "mock_job_001",
+        "jobName": "Python后端开发工程师",
+        "salaryDesc": "15-25K·14薪",
+        "locationName": "深圳",
+        "postDescription": "岗位职责：\n1. 负责核⼼业务系统后端研发，支撑大型银⾏核心支付结算；\n2. 参与微服务架构设计与高并发性能调优；\n\n任职要求：\n1. 本科及以上学历，计算机相关专业；\n2. 熟练掌握Python及FastAPI/Django；\n3. 本岗位为驻场外包服务，介意者勿投。"
+      }
+    }
+  }
+}

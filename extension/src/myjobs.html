@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>我的岗位库</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 840px;
+      margin: 32px auto;
+      padding: 0 20px;
+      color: #333;
+      background: #fafafa;
+    }
+    h1 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      font-weight: 700;
+      color: #1976d2;
+    }
+    .filters-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .filter-btn {
+      background: #ffffff;
+      border: 1px solid #d0d0d0;
+      border-radius: 4px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: #333;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+    .filter-btn:hover {
+      background: #f0f0f0;
+    }
+    .filter-btn.active {
+      background: #1976d2;
+      border-color: #1976d2;
+      color: #ffffff;
+      font-weight: 600;
+    }
+    .filter-count {
+      opacity: 0.85;
+      font-size: 12px;
+    }
+    .notice-card {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      background: #fff;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .notice-card.error {
+      border-color: #ef9a9a;
+      background: #ffebee;
+      color: #c62828;
+    }
+    .notice-card.warning {
+      border-color: #ffe082;
+      background: #fff8e1;
+      color: #b78103;
+    }
+    .notice-card.info {
+      border-color: #90caf9;
+      background: #e3f2fd;
+      color: #0d47a1;
+    }
+    .notice-link {
+      color: #1976d2;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+    .search-box-row {
+      margin-bottom: 16px;
+    }
+    .search-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 9px 14px;
+      font-size: 14px;
+      border: 1px solid #d0d0d0;
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      background: #ffffff;
+    }
+    .search-input:focus {
+      border-color: #1976d2;
+      box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.15);
+    }
+    .filter-checkbox-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: #555;
+      margin-left: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .jobs-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .job-card {
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      color: inherit;
+    }
+    .job-card:hover {
+      border-color: #1976d2;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    }
+    .job-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .job-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1976d2;
+      word-break: break-word;
+    }
+    .job-badge {
+      font-size: 12px;
+      font-weight: bold;
+      padding: 2px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .job-badge.green { background: #e8f5e9; color: #2e7d32; }
+    .job-badge.blue { background: #e3f2fd; color: #1565c0; }
+    .job-badge.yellow { background: #fffde7; color: #5d4037; border: 1px solid #f9a825; }
+    .job-badge.red { background: #ffebee; color: #c62828; }
+    .job-badge.neutral { background: #f5f5f5; color: #666; }
+    .job-badge.stale { opacity: 0.7; border: 1px dashed currentColor; }
+    .job-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      color: #444;
+      margin-bottom: 8px;
+    }
+    .job-company {
+      font-weight: 500;
+      color: #333;
+    }
+    .job-company.muted {
+      color: #999;
+      font-style: italic;
+    }
+    .job-salary {
+      font-weight: 600;
+      color: #e65100;
+    }
+    .job-salary.muted {
+      color: #999;
+      font-weight: normal;
+    }
+    .job-city {
+      color: #666;
+    }
+    .job-last-seen {
+      color: #888;
+      font-size: 12px;
+    }
+    .job-hr-block {
+      margin: 8px 0;
+      padding: 8px 10px;
+      background: #f8f9fa;
+      border-radius: 6px;
+      border: 1px solid #eceff1;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .job-hr-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .job-hr-label {
+      font-weight: 600;
+      color: #455a64;
+      font-size: 12px;
+    }
+    .job-hr-actions {
+      display: inline-flex;
+      gap: 8px;
+    }
+    .hr-btn-link {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 12px;
+      color: #1976d2;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .hr-btn-link:hover {
+      color: #0d47a1;
+    }
+    .job-hr-content {
+      color: #37474f;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+    .job-hr-content.expanded {
+      -webkit-line-clamp: unset;
+      display: block;
+    }
+    .job-hr-content.empty {
+      color: #90a4ae;
+      font-style: italic;
+    }
+    .job-hr-edit-area {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .job-hr-textarea {
+      width: 100%;
+      box-sizing: border-box;
+      min-height: 60px;
+      max-height: 160px;
+      padding: 6px 8px;
+      font-size: 13px;
+      border: 1px solid #cfd8dc;
+      border-radius: 4px;
+      resize: vertical;
+      font-family: inherit;
+    }
+    .job-hr-edit-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .job-hr-edit-error {
+      font-size: 12px;
+      color: #d32f2f;
+    }
+    .job-hr-edit-btns {
+      display: inline-flex;
+      gap: 6px;
+      margin-left: auto;
+    }
+    .btn-sm {
+      padding: 4px 10px;
+      font-size: 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 1px solid #d0d0d0;
+      background: #ffffff;
+    }
+    .btn-sm.primary {
+      background: #1976d2;
+      color: #ffffff;
+      border-color: #1976d2;
+    }
+    .btn-sm.primary:disabled {
+      background: #b0bec5;
+      border-color: #b0bec5;
+      cursor: not-allowed;
+    }
+    .job-footer-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 12px;
+      color: #666;
+      padding-top: 8px;
+      border-top: 1px solid #f0f0f0;
+    }
+    .job-status-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .status-btn {
+      background: #ffffff;
+      border: 1px solid #cfd8dc;
+      border-radius: 4px;
+      padding: 3px 8px;
+      font-size: 12px;
+      color: #546e7a;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .status-btn:hover {
+      background: #eceff1;
+    }
+    .status-btn.active {
+      background: #1976d2;
+      border-color: #1976d2;
+      color: #ffffff;
+      font-weight: 600;
+    }
+    .status-btn.cancel-btn {
+      color: #78909c;
+    }
+    .status-btn.cancel-btn:hover {
+      color: #d32f2f;
+    }
+    .job-status-notice {
+      display: inline-block;
+      background: #fff3e0;
+      color: #e65100;
+      border: 1px solid #ffe0b2;
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 12px;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 48px 0;
+      font-size: 14px;
+      color: #888;
+      background: #ffffff;
+      border: 1px dashed #d0d0d0;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>我的岗位库</h1>
+
+  <div class="search-box-row">
+    <input type="text" id="search-input" class="search-input" placeholder="搜索职位名、公司名或 HR 实际情况..." />
+  </div>
+
+  <div id="notice-container"></div>
+  <div id="total-matches-notice" class="notice-card info" style="display: none;"></div>
+
+  <div class="filters-bar" id="filters-bar">
+    <button type="button" class="filter-btn" data-filter="all_jobs" title="有状态、判断过或记过 HR 说的话的岗位">
+      <span class="filter-label">全部岗位</span>
+      <span class="filter-count" id="count-all_jobs">(0)</span>
+    </button>
+    <button type="button" class="filter-btn active" data-filter="all">
+      <span class="filter-label">已标记</span>
+      <span class="filter-count" id="count-all">(0)</span>
+    </button>
+    <button type="button" class="filter-btn" data-filter="saved">
+      <span class="filter-label">收藏</span>
+      <span class="filter-count" id="count-saved">(0)</span>
+    </button>
+    <button type="button" class="filter-btn" data-filter="applied">
+      <span class="filter-label">已投递</span>
+      <span class="filter-count" id="count-applied">(0)</span>
+    </button>
+    <button type="button" class="filter-btn" data-filter="skipped">
+      <span class="filter-label">不考虑</span>
+      <span class="filter-count" id="count-skipped">(0)</span>
+    </button>
+    <button type="button" class="filter-btn" data-filter="recent">
+      <span class="filter-label">最近看过</span>
+      <span class="filter-count" id="count-recent">(0)</span>
+    </button>
+
+    <label class="filter-checkbox-label" title="只查看有 HR 实际情况记录的岗位">
+      <input type="checkbox" id="hr-only-checkbox" />
+      <span>只看有 HR 记录</span>
+    </label>
+  </div>
+
+  <div class="jobs-container" id="jobs-container"></div>
+
+  <script type="module" src="myjobs.js"></script>
+</body>
+</html>

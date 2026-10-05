@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Jet 设置</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 500px;
+      margin: 40px auto;
+      padding: 0 20px;
+      color: #333;
+    }
+    h1 {
+      font-size: 20px;
+      margin-bottom: 24px;
+    }
+    h2 {
+      font-size: 16px;
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+    .card {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 20px;
+      background: #fafafa;
+    }
+    .status-row {
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+    .status-badge.jet_down { background: #ffebee; color: #c62828; }
+    .status-badge.unpaired { background: #fff8e1; color: #f57f17; }
+    .status-badge.paired { background: #e8f5e9; color: #2e7d32; }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    input[type="text"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px 12px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-family: inherit;
+    }
+    textarea {
+      resize: vertical;
+    }
+    .char-count {
+      font-size: 12px;
+      color: #707070;
+      text-align: right;
+      margin-top: 4px;
+    }
+    button {
+      background-color: #1976d2;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 14px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1565c0;
+    }
+    .msg {
+      margin-top: 10px;
+      font-size: 13px;
+    }
+    .msg.error { color: #d32f2f; }
+    .msg.success { color: #2e7d32; }
+    .msg.info { color: #555555; }
+    .labels-footer {
+      text-align: center;
+      font-size: 12px;
+      color: #707070;
+      margin-top: 24px;
+      margin-bottom: 24px;
+    }
+    button:disabled {
+      background-color: #cccccc;
+      color: #666666;
+      cursor: not-allowed;
+    }
+    button.btn-secondary {
+      background-color: #f5f5f5;
+      color: #333333;
+      border: 1px solid #cccccc;
+    }
+    button.btn-secondary:hover:not(:disabled) {
+      background-color: #e0e0e0;
+    }
+    button.btn-danger {
+      background-color: #d32f2f;
+      color: white;
+    }
+    button.btn-danger:hover:not(:disabled) {
+      background-color: #c62828;
+    }
+    button.btn-link {
+      background: none;
+      border: none;
+      color: #1976d2;
+      padding: 0;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    button.btn-link:hover:not(:disabled) {
+      color: #1565c0;
+      background: none;
+    }
+    .experience-item,
+    .resume-item {
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+    .experience-header,
+    .resume-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .experience-header strong,
+    .resume-header strong {
+      font-size: 13px;
+      color: #444;
+    }
+    .char-count.over-limit {
+      color: #d32f2f;
+      font-weight: bold;
+    }
+    .hint-text {
+      font-size: 13px;
+      color: #666666;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div style="margin-bottom: 16px;">
+    <a href="myjobs.html" target="_blank" style="color: #1976d2; text-decoration: none; font-size: 14px; font-weight: 500;">打开我的岗位库</a>
+  </div>
+  <h1>Jet 插件设置</h1>
+
+  <div class="card">
+    <div class="status-row">
+      <strong>连接状态：</strong>
+      <span id="connection-status" class="status-badge">检测中...</span>
+    </div>
+    <div id="quota-row" class="status-row" style="display: none;">
+      <strong>今日额度：</strong>
+      <span id="quota-info">-</span>
+    </div>
+  </div>
+
+  <div id="llm-key-section" class="card">
+    <h2>DeepSeek API Key</h2>
+    <div class="hint-text">
+      用于岗位判断和聊天辅助。Key 保存在本机数据目录，浏览器扩展不持久化明文。
+    </div>
+    <div class="status-row">
+      <strong>当前状态：</strong>
+      <span id="llm-key-status">未填写</span>
+    </div>
+    <div class="status-row">
+      <strong>来源说明：</strong>
+      <span id="llm-key-source">未填写</span>
+    </div>
+    <div class="form-group">
+      <label for="llm-key-input">填写新 Key：</label>
+      <input type="password" id="llm-key-input" placeholder="sk-..." autocomplete="off" />
+    </div>
+    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+      <button type="button" id="llm-key-save-btn">保存</button>
+      <button type="button" id="llm-key-test-btn" class="btn-secondary">测试连接</button>
+      <button type="button" id="llm-key-clear-btn" class="btn-danger">清除</button>
+    </div>
+    <div id="llm-key-msg" class="msg" style="display: none;"></div>
+  </div>
+
+  <div id="marks-section" class="card">
+    <h2>页面标记</h2>
+    <div class="form-group" style="margin-bottom: 0;">
+      <label style="display: flex; align-items: center; cursor: pointer; font-weight: normal; margin-bottom: 4px;">
+        <input type="checkbox" id="marks-enabled" style="width: auto; margin-right: 8px;" />
+        <span id="marks-enabled-label">在 BOSS 页面上显示结论卡片和列表标记（关闭后只在侧边栏显示）</span>
+      </label>
+      <div style="font-size: 12px; color: #666; margin-left: 24px;">
+        侧边栏：点 Chrome 工具栏的侧边栏按钮，选择 Jet
+      </div>
+    </div>
+  </div>
+
+  <div id="auto-generate-section" class="card">
+    <h2>聊天自动生成</h2>
+    <div class="form-group" style="margin-bottom: 0;">
+      <label style="display: flex; align-items: center; cursor: pointer; font-weight: normal; margin-bottom: 4px;">
+        <input type="checkbox" id="auto-generate" style="width: auto; margin-right: 8px;" checked />
+        <span id="auto-generate-label">打开聊天自动生成</span>
+      </label>
+      <div class="hint-text" style="margin-left: 24px; margin-bottom: 0;">
+        开启时，在聊天页打开侧边栏或切换聊天会自动生成建议并把脱敏内容发送给 DeepSeek（计入每天次数）；关闭后只在你点'生成'时发送
+      </div>
+    </div>
+  </div>
+
+  <div id="prejudge-section" class="card">
+    <h2>列表预判</h2>
+    <div class="hint-text">
+      在 BOSS 直聘岗位列表页自动预判岗位是否值得点开（按页打包调用大模型，每页最多 40 条）。0 表示关闭。
+    </div>
+    <div class="form-group">
+      <label for="prejudge-daily-limit">每日预判上限（页/天，0–200）：</label>
+      <input type="number" id="prejudge-daily-limit" min="0" max="200" step="1" value="20" placeholder="默认 20" />
+    </div>
+    <div id="prejudge-quota-info" class="hint-text" style="margin-bottom: 12px; color: #555;">
+      今日已用：- 页 / 剩余：- 页（上限：- 页）
+    </div>
+    <button type="button" id="prejudge-save-btn">保存预判设置</button>
+    <div id="prejudge-msg" class="msg"></div>
+  </div>
+
+  <div id="profile-section" class="card">
+    <h2>我的画像</h2>
+    <div class="form-group">
+      <label for="profile-directions">方向 / 岗位类型（必填）：</label>
+      <textarea id="profile-directions" rows="2" placeholder="每行或逗号分隔，例如：后端开发, 架构师"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="profile-keywords">关键词：</label>
+      <textarea id="profile-keywords" rows="2" placeholder="每行或逗号分隔，例如：Go, Python, 分布式"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="profile-preferred-cities">偏好城市（选填，不填表示城市都可以；只作为偏好，不会直接排除）：</label>
+      <textarea id="profile-preferred-cities" rows="2" placeholder="每行或逗号分隔，例如：深圳, 广州"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="profile-excluded-cities">不去的城市（选填，命中会直接判不建议投）：</label>
+      <textarea id="profile-excluded-cities" rows="2" placeholder="每行或逗号分隔，例如：北京, 上海"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="profile-current-city">目前所在城市（可选）：</label>
+      <input type="text" id="profile-current-city" maxlength="20" placeholder="例如：成都" />
+      <div class="hint-text" style="font-size: 12px; color: #666; margin-top: 4px;">
+        HR 问你在哪个城市时，话术会直接用这里填的城市。填写后会随沟通建议发给 DeepSeek。
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="profile-exclude">不接受关键词：</label>
+      <textarea id="profile-exclude" rows="2" placeholder="每行或逗号分隔，例如：外包, 驻场"></textarea>
+      <div class="hint-text" style="font-size: 12px; color: #666; margin-top: 4px;">
+        写上"销售"后，销售与客户对接成分高的岗位会一律判为不建议投。
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="profile-min-k">最低月薪（千元/月，选填，低于它直接判不建议投）：</label>
+      <input type="number" id="profile-min-k" step="0.5" min="0" placeholder="例如：20" />
+    </div>
+    <div class="form-group">
+      <label for="profile-nonpref-min-k">非偏好城市的最低月薪（千元/月，选填：不在偏好城市且低于它时，结论最多'需要确认'）：</label>
+      <input type="number" id="profile-nonpref-min-k" step="0.5" min="0" placeholder="例如：25" />
+    </div>
+    <div class="form-group">
+      <label for="profile-work-preference">工作内容偏好（选填，最多 500 字，供大模型参考）：</label>
+      <textarea id="profile-work-preference" rows="3" maxlength="500" placeholder="例如：希望做偏技术的岗位；不接受频繁出差或承担销售业绩。"></textarea>
+      <div id="profile-work-preference-count" class="char-count">已输入 0 / 500</div>
+    </div>
+    <div class="form-group">
+      <label for="profile-background">我的背景（选填，最多 500 字，供大模型参考）：</label>
+      <textarea id="profile-background" rows="3" maxlength="500" placeholder="例如：相关专业本科，数年相关领域工作经验，熟悉常用开发工具与框架。"></textarea>
+      <div id="profile-background-count" class="char-count">已输入 0 / 500</div>
+    </div>
+    <button id="profile-save-btn">保存画像</button>
+    <div id="profile-msg" class="msg"></div>
+  </div>
+
+  <div id="resume-section" class="card">
+    <h2>我的简历</h2>
+    <div class="hint-text">
+      上传时，简历文字会在本机去掉姓名、手机号、邮箱等联系方式后发送给 DeepSeek 生成简历画像；之后岗位判断时只发送画像（编号为简历1/2/3，不发送简历名称）。本机只保存提取出的文字和画像，不保存 PDF 文件。
+    </div>
+    <div class="form-group" style="margin-bottom: 12px;">
+      <label for="resume-self-name" style="font-size: 13px;">你的姓名（只在本机用于去掉姓名，不发送）：</label>
+      <input type="text" id="resume-self-name" maxlength="20" placeholder="例如：李明" style="max-width: 320px;" />
+    </div>
+    <div id="resume-list"></div>
+    <div id="resume-empty" style="font-size: 13px; color: #707070; margin-bottom: 12px; display: none;">
+      暂无简历，可点击下方"添加简历"录入（最多 3 份）。
+    </div>
+    <div id="resume-min-hint" class="hint-text" style="color: #b35808; display: none; margin-bottom: 12px;">
+      至少 2 份才会给出建议
+    </div>
+    <div style="display: flex; gap: 8px; margin-top: 12px; align-items: center;">
+      <button type="button" id="resume-add-btn" class="btn-secondary">添加简历</button>
+      <button type="button" id="resume-save-btn">保存简历</button>
+    </div>
+    <div id="resume-msg" class="msg"></div>
+  </div>
+
+  <div id="strict-industry-section" class="card">
+    <h2>从严行业</h2>
+    <div class="hint-text">
+      上传时，简历文字会在本机去掉姓名、手机号、邮箱等联系方式后发送给 DeepSeek 生成简历画像；之后岗位判断时只发送画像（编号为简历1/2/3，不发送简历名称）。本机只保存提取出的文字和画像，不保存 PDF 文件。
+    </div>
+    <div id="strict-industry-list" style="margin-bottom: 12px;"></div>
+    <div id="strict-industry-empty" style="font-size: 13px; color: #707070; margin-bottom: 12px; display: none;">
+      暂无可选从严行业。
+    </div>
+    <div style="display: flex; gap: 8px; margin-top: 12px; align-items: center;">
+      <button type="button" id="strict-industry-save-btn">保存从严行业</button>
+    </div>
+    <div id="strict-industry-msg" class="msg"></div>
+  </div>
+
+  <div id="experience-section" class="card">
+    <h2>我的经历素材</h2>
+    <div class="hint-text">
+      只写真实经历，生成话术时只会引用这里的条目；这些内容会发送给 DeepSeek（发送前需要你在侧边栏同意）
+    </div>
+    <div id="experience-list"></div>
+    <div id="experience-empty" style="font-size: 13px; color: #707070; margin-bottom: 12px; display: none;">
+      暂无经历素材，可点击下方"添加经历"录入（最多 10 条）。
+    </div>
+    <div style="display: flex; gap: 8px; margin-top: 12px; align-items: center;">
+      <button type="button" id="experience-add-btn" class="btn-secondary">添加经历</button>
+      <button type="button" id="experience-save-btn">保存经历</button>
+    </div>
+    <div id="experience-msg" class="msg"></div>
+  </div>
+
+  <div id="consent-section" class="card">
+    <h2>数据发送同意</h2>
+    <div id="consent-scope-desc" class="hint-text" style="margin-bottom: 12px;">
+      当前同意覆盖"打开聊天自动发送"和"目前所在城市"（发送字段版本 3），更早的同意需要重新确认。
+    </div>
+    <div class="status-row">
+      <strong>同意状态：</strong>
+      <span id="consent-status" class="status-badge">检测中...</span>
+    </div>
+    <div id="consent-time-row" class="status-row" style="display: none;">
+      <strong>同意时间：</strong>
+      <span id="consent-time">-</span>
+    </div>
+    <div id="consent-hint" class="hint-text" style="display: none; margin-top: 8px;">
+      首次生成时会在侧边栏请你确认（当前同意覆盖"打开聊天自动发送"，旧的同意需要重新确认）
+    </div>
+    <button type="button" id="consent-revoke-btn" class="btn-danger" style="display: none; margin-top: 4px;">撤回同意</button>
+    <div id="consent-msg" class="msg"></div>
+  </div>
+
+  <div id="pair-section" class="card">
+    <h2>配对设置</h2>
+    <div class="form-group">
+      <label for="pair-code">输入 6 位配对码：</label>
+      <input type="text" id="pair-code" maxlength="6" placeholder="例如：123456" />
+    </div>
+    <button id="pair-btn">配对</button>
+    <div id="pair-msg" class="msg"></div>
+  </div>
+
+  <div id="labels-footer" class="labels-footer" style="display: none;">
+    <span id="labels-info"></span>
+  </div>
+
+  <script type="module" src="options.js"></script>
+</body>
+</html>

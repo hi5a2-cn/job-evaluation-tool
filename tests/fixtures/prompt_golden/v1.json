@@ -1,0 +1,114 @@
+{
+  "client_outcome_no_think": {
+    "cost_cny": 0.003404,
+    "derivation": null,
+    "engine": "deepseek-flash:no-think",
+    "error": null,
+    "facts": null,
+    "hr_questions": null,
+    "prompt_version": "v1",
+    "reasons": [
+      "技术栈与架构要求高度匹配",
+      "薪资与工作地点符合预期"
+    ],
+    "resume_suggestion": null,
+    "status": "done",
+    "usage": {
+      "completion_tokens": 200,
+      "prompt_cache_hit_tokens": 100,
+      "prompt_tokens": 1000
+    },
+    "verdict": "fit",
+    "verdict_reason": null
+  },
+  "client_request_no_think": {
+    "max_tokens": 400,
+    "messages": [
+      {
+        "content": "你是一个专业的求职匹配评估专家。请根据候选人的求职画像和岗位详情，客观判断该岗位是否适合候选人。\n你必须且只能以 JSON 对象格式输出评估结论，格式如下：\n{\n  \"verdict\": \"fit\" 或 \"unfit\",\n  \"reasons\": [\"理由1\", \"理由2\", \"理由3\"]\n}\n约束：\n1. verdict 必须是 \"fit\"（适合）或 \"unfit\"（不适合）之一。\n2. reasons 为结论理由列表，最多 3 条，每条理由不超过 40 个汉字，必须使用中文。\n3. 严格只输出合法 JSON，不要包含任何 markdown 代码块标记或其他额外文本。\n",
+        "role": "system"
+      },
+      {
+        "content": "【候选人画像】\n- 目标方向：后端开发、Python工程师\n- 技能与关键词：Python、FastAPI、PostgreSQL、Docker\n- 期望城市：深圳、广州\n- 最低月薪底线：20.0K\n- 不接受条件：销售、外包、电话客服\n\n【岗位信息】\n- 职位名称：Python资深开发工程师\n- 薪资范围：25-35K\n- 工作城市：深圳\n- 所属区域：南山区\n- 职位描述：\n负责核心业务系统的架构设计与后端微服务开发；解决系统性能瓶颈与高并发技术难题；与团队协作完成高质量代码交付。要求本科及以上学历，熟练掌握 Python 及主流框架。\n\n请依据上述画像和岗位信息给出评估结果，只返回符合要求的 JSON。",
+        "role": "user"
+      }
+    ],
+    "model": "deepseek-flash",
+    "response_format": {
+      "type": "json_object"
+    },
+    "temperature": 0,
+    "thinking": {
+      "type": "disabled"
+    }
+  },
+  "client_request_think": {
+    "max_tokens": 8192,
+    "messages": [
+      {
+        "content": "你是一个专业的求职匹配评估专家。请根据候选人的求职画像和岗位详情，客观判断该岗位是否适合候选人。\n你必须且只能以 JSON 对象格式输出评估结论，格式如下：\n{\n  \"verdict\": \"fit\" 或 \"unfit\",\n  \"reasons\": [\"理由1\", \"理由2\", \"理由3\"]\n}\n约束：\n1. verdict 必须是 \"fit\"（适合）或 \"unfit\"（不适合）之一。\n2. reasons 为结论理由列表，最多 3 条，每条理由不超过 40 个汉字，必须使用中文。\n3. 严格只输出合法 JSON，不要包含任何 markdown 代码块标记或其他额外文本。\n",
+        "role": "system"
+      },
+      {
+        "content": "【候选人画像】\n- 目标方向：后端开发、Python工程师\n- 技能与关键词：Python、FastAPI、PostgreSQL、Docker\n- 期望城市：深圳、广州\n- 最低月薪底线：20.0K\n- 不接受条件：销售、外包、电话客服\n\n【岗位信息】\n- 职位名称：Python资深开发工程师\n- 薪资范围：25-35K\n- 工作城市：深圳\n- 所属区域：南山区\n- 职位描述：\n负责核心业务系统的架构设计与后端微服务开发；解决系统性能瓶颈与高并发技术难题；与团队协作完成高质量代码交付。要求本科及以上学历，熟练掌握 Python 及主流框架。\n\n请依据上述画像和岗位信息给出评估结果，只返回符合要求的 JSON。",
+        "role": "user"
+      }
+    ],
+    "model": "deepseek-flash",
+    "response_format": {
+      "type": "json_object"
+    },
+    "temperature": 0,
+    "thinking": {
+      "type": "enabled"
+    }
+  },
+  "worker_judgement_row": {
+    "derivation": null,
+    "engine": "deepseek-flash:no-think",
+    "error": null,
+    "facts": null,
+    "hr_questions": null,
+    "job_id": 1,
+    "job_version_id": 10,
+    "origin": null,
+    "profile_id": 1,
+    "prompt_version": "v1",
+    "reasons": [
+      "技术栈与架构要求高度匹配",
+      "薪资与工作地点符合预期"
+    ],
+    "resume_direction": null,
+    "resume_reason": null,
+    "review": null,
+    "rule_result": {},
+    "source": "llm",
+    "status": "done",
+    "superseded_by": null,
+    "user_id": "me",
+    "verdict": "fit",
+    "verdict_reason": null
+  },
+  "worker_request_initial": {
+    "max_tokens": 400,
+    "messages": [
+      {
+        "content": "你是一个专业的求职匹配评估专家。请根据候选人的求职画像和岗位详情，客观判断该岗位是否适合候选人。\n你必须且只能以 JSON 对象格式输出评估结论，格式如下：\n{\n  \"verdict\": \"fit\" 或 \"unfit\",\n  \"reasons\": [\"理由1\", \"理由2\", \"理由3\"]\n}\n约束：\n1. verdict 必须是 \"fit\"（适合）或 \"unfit\"（不适合）之一。\n2. reasons 为结论理由列表，最多 3 条，每条理由不超过 40 个汉字，必须使用中文。\n3. 严格只输出合法 JSON，不要包含任何 markdown 代码块标记或其他额外文本。\n",
+        "role": "system"
+      },
+      {
+        "content": "【候选人画像】\n- 目标方向：后端开发、Python工程师\n- 技能与关键词：Python、FastAPI、PostgreSQL、Docker\n- 期望城市：深圳、广州\n- 最低月薪底线：20.0K\n- 不接受条件：销售、外包、电话客服\n\n【岗位信息】\n- 职位名称：Python资深开发工程师\n- 薪资范围：25-35K\n- 工作城市：深圳\n- 所属区域：南山区\n- 职位描述：\n负责核心业务系统的架构设计与后端微服务开发；解决系统性能瓶颈与高并发技术难题；与团队协作完成高质量代码交付。要求本科及以上学历，熟练掌握 Python 及主流框架。\n\n请依据上述画像和岗位信息给出评估结果，只返回符合要求的 JSON。",
+        "role": "user"
+      }
+    ],
+    "model": "deepseek-flash",
+    "response_format": {
+      "type": "json_object"
+    },
+    "temperature": 0,
+    "thinking": {
+      "type": "disabled"
+    }
+  },
+  "worker_request_review": null
+}

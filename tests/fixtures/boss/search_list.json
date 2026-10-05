@@ -1,0 +1,143 @@
+{
+  "path": "/web/geek/job",
+  "vue": {
+    "hasMore": true,
+    "jobList": [
+      {
+        "encryptJobId": "mock_job_001",
+        "jobName": "Python后端开发工程师",
+        "salaryDesc": "15-25K·14薪",
+        "cityName": "深圳",
+        "areaDistrict": "南山区",
+        "brandName": "虚构科技A",
+        "jobExperience": "3-5年"
+      },
+      {
+        "encryptJobId": "mock_job_002",
+        "jobName": "高级Python工程师",
+        "salaryDesc": "20-35K",
+        "cityName": "深圳",
+        "areaDistrict": "福田区",
+        "brandName": "虚构软件B",
+        "jobExperience": "5-10年"
+      },
+      {
+        "encryptJobId": "mock_job_003",
+        "jobName": "数据分析师",
+        "salaryDesc": "12-18K",
+        "cityName": "广州",
+        "areaDistrict": "天河区",
+        "brandName": "虚构数据C",
+        "jobExperience": "1-3年"
+      },
+      {
+        "encryptJobId": "mock_job_004",
+        "jobName": "架构师",
+        "salaryDesc": "30-50K·16薪",
+        "cityName": "北京",
+        "areaDistrict": "海淀区",
+        "brandName": "虚构互联D",
+        "jobExperience": "5-10年"
+      },
+      {
+        "encryptJobId": "mock_job_005",
+        "jobName": "算法工程师",
+        "salaryDesc": "",
+        "cityName": "上海",
+        "areaDistrict": "浦东新区",
+        "brandName": "虚构智能E",
+        "jobExperience": "应届生"
+      },
+      {
+        "encryptJobId": "mock_job_006",
+        "jobName": "全栈开发工程师",
+        "salaryDesc": "18-28K",
+        "cityName": "杭州",
+        "areaDistrict": "西湖区",
+        "brandName": "虚构网络F",
+        "jobExperience": "3-5年"
+      },
+      {
+        "encryptJobId": "mock_job_007",
+        "jobName": "后端开发专家",
+        "salaryDesc": "35-50K",
+        "cityName": "深圳",
+        "areaDistrict": "南山区",
+        "brandName": "虚构云端G",
+        "jobExperience": "5-10年"
+      },
+      {
+        "encryptJobId": "mock_job_008",
+        "jobName": "初级Python开发",
+        "salaryDesc": "8-12K",
+        "cityName": "成都",
+        "areaDistrict": "",
+        "brandName": "虚构创新H",
+        "jobExperience": "1-3年"
+      },
+      {
+        "encryptJobId": "mock_job_009",
+        "jobName": "数据开发工程师",
+        "salaryDesc": "16-24K",
+        "cityName": "深圳",
+        "areaDistrict": "宝安区",
+        "brandName": "虚构数码I",
+        "jobExperience": "3-5年"
+      },
+      {
+        "encryptJobId": "mock_job_010",
+        "jobName": "DevOps工程师",
+        "salaryDesc": "15-22K",
+        "cityName": "武汉",
+        "areaDistrict": "江夏区",
+        "brandName": "虚构科技J",
+        "jobExperience": "3-5年"
+      },
+      {
+        "encryptJobId": "mock_job_011",
+        "jobName": "测试开发工程师",
+        "salaryDesc": "14-20K",
+        "cityName": "深圳",
+        "areaDistrict": "龙岗区",
+        "brandName": "虚构测试K",
+        "jobExperience": "2-4年"
+      },
+      {
+        "encryptJobId": "mock_job_012",
+        "jobName": "运维工程师",
+        "salaryDesc": "10-15K",
+        "cityName": "南京",
+        "areaDistrict": "",
+        "brandName": "虚构云服L",
+        "jobExperience": "1-3年"
+      },
+      {
+        "encryptJobId": "mock_job_013",
+        "jobName": "大数据架构师",
+        "salaryDesc": "40-60K",
+        "cityName": "北京",
+        "areaDistrict": "朝阳区",
+        "brandName": "虚构平台M",
+        "jobExperience": "5-10年"
+      },
+      {
+        "encryptJobId": "mock_job_014",
+        "jobName": "系统研发工程师",
+        "salaryDesc": "20-30K·15薪",
+        "cityName": "上海",
+        "areaDistrict": "徐汇区",
+        "brandName": "虚构软件N",
+        "jobExperience": "3-5年"
+      },
+      {
+        "encryptJobId": "mock_job_015",
+        "jobName": "爬虫开发工程师",
+        "salaryDesc": "13-18K",
+        "cityName": "广州",
+        "areaDistrict": "海珠区",
+        "brandName": "虚构信息O",
+        "jobExperience": "1-3年"
+      }
+    ]
+  }
+}
