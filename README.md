@@ -1,5 +1,42 @@
 # Jet
 
+[English](#english) | [中文](#中文)
+
+---
+
+## English
+
+Jet is a local-first AI job-search decision assistant for individual job seekers. It pairs a Chrome extension with a local backend service running on your own Mac. While browsing BOSS Zhipin, Jet evaluates whether jobs are worth applying to. It suggests which resume to use and provides communication advice during recruiter chats. All job records, resumes, and chat transcripts stay securely on your own computer.
+
+### Key features
+
+- **Local-first privacy**: Personal resumes and job databases stay on your Mac. Only anonymized job details and prompts go to DeepSeek with your own API key.
+- **Job evaluation**: Pre-screens listings on search pages, evaluates detailed job descriptions, and matches against your profile and strict industry filters.
+- **Recruiter chat assistant**: Offers communication strategy and advice during HR chats while filtering sensitive fields.
+
+### Quick start (macOS)
+
+1. **Install dependencies**:
+   ```bash
+   uv sync
+   ```
+2. **Start the service**:
+   ```bash
+   uv run jet serve
+   ```
+3. **Pair the Chrome extension**:
+   Load `extension/` in `chrome://extensions` with Developer Mode enabled. In your terminal, run:
+   ```bash
+   uv run jet pair
+   ```
+   Enter the 6-digit pairing code in the extension settings page.
+4. **Configure DeepSeek API Key**:
+   Add your DeepSeek API key in the Jet extension settings and click "Test Connection".
+
+---
+
+## 中文
+
 Jet 是面向个人求职者的本地优先 AI 求职助手：一个 Chrome 插件加一个跑在你自己电脑上的服务。浏览 BOSS 直聘时，它帮你判断岗位值不值得投、该投哪份简历，并在和 HR 聊天时给出沟通建议。岗位、简历和聊天记录都存在你自己的电脑上。
 
 ## 使用前请先读
@@ -19,20 +56,20 @@ Jet 是面向个人求职者的本地优先 AI 求职助手：一个 Chrome 插�
 如果你是直接使用（不需要修改代码），推荐使用此一键安装方式（**Windows 暂不支持**）：
 
 1. **下载**：在本项目 GitHub 页面右侧的 **Releases** 里下载最新版本的源码压缩包（Source code (zip)）。
-2. **解压到一个固定位置**：解压到一个固定位置（例如“文稿/jet”），之后不要移动；移动后需重新运行脚本。
-3. **运行安装脚本**：打开“终端”（Terminal）应用，运行：
+2. **解压到一个固定位置**：解压到一个固定位置（例如「文稿/jet」），之后不要移动；移动后需重新运行脚本。
+3. **运行安装脚本**：打开「终端」（Terminal）应用，运行：
    ```bash
    bash "<解压目录>/scripts/install-macos.sh"
    ```
    （说明：可以先在终端输入 `bash `，然后直接把脚本拖进终端窗口）。脚本会检查系统与 `uv` 工具、配置后台服务并进行健康检查。如未安装 `uv`，按终端提示安装后重新打开终端再运行本脚本即可。
 4. **按脚本最后的提示加载插件并配对**：
-   - 打开 Chrome 浏览器，访问 `chrome://extensions`，开启右上角“开发者模式”；
-   - 点击左上角“加载已解压的扩展程序”，选择 `<解压目录>/extension`；
+   - 打开 Chrome 浏览器，访问 `chrome://extensions`，开启右上角「开发者模式」；
+   - 点击左上角「加载已解压的扩展程序」，选择 `<解压目录>/extension`；
    - 在终端进入解压目录后运行 `uv run --frozen jet pair` 获取 6 位配对码；
-   - 打开插件设置页（在扩展卡片中点“选项”或点击侧边栏右上角设置图标），填入配对码完成配对。
+   - 打开插件设置页（在扩展卡片中点「选项」或点击侧边栏右上角设置图标），填入配对码完成配对。
 5. **在设置页填写 DeepSeek API Key 并测试连接**：
-   - 打开 Jet 设置页，在“DeepSeek API Key”区域输入你的 API Key；
-   - 点击“测试连接”，确认连接成功后点击“保存”。
+   - 打开 Jet 设置页，在「DeepSeek API Key」区域输入你的 API Key；
+   - 点击「测试连接」，确认连接成功后点击「保存」。
 
 **卸载**：运行 `scripts/uninstall-macos.sh`（即 `bash "<解压目录>/scripts/uninstall-macos.sh"`）。
 
@@ -99,14 +136,14 @@ uv run jet stats
 ## 列表页粗筛、预判与独立职位页
 
 - **搜索列表页粗筛提示**：按画像和重点排查行业在未判断的岗位卡片上显示灰蓝色「粗筛：…」提示，只是提示、不调大模型、不花额度，鼠标悬停看全部；保存画像后已打开的列表页自动更新提示。
-- **列表页预判**：在搜索列表页，新出现的岗位按页打包，用列表上已有的信息（职位名、公司、行业、薪资、城市、经验、学历、标签）加上画像和勾选的从严行业，调用一次大模型给出「预判·值得点开 / 预判·一般 / 预判·可跳过」，用虚线样式显示在卡片上，悬停看理由。预判只是提示，不写入正式判断，不占判断额度，单独计数（默认每天 20 页，设置页可改）；点开岗位后照常做正式判断，有正式判断的岗位只显示正式判断。
+- **列表页预判**：在搜索列表页，新出现的岗位按页打包，用列表上已有的信息（职位名、公司、行业、薪资、城市、经验、学历、标签）加上画像和勾选的从严行业，调用一次大模型给出「预判·值得点开」「预判·一般」或「预判·可跳过」，用虚线样式显示在卡片上，悬停看理由。预判只是提示，不写入正式判断，不占判断额度，单独计数（默认每天 20 页，设置页可改）；点开岗位后照常做正式判断，有正式判断的岗位只显示正式判断。
 - **独立职位页读取**：独立职位页（如从聊天页点「查看职位」打开）会被读取、入库并判断，读不出时显示「此页暂不支持读取」。
 
 ## 岗位信息跨页面联通
 
 同一个岗位的投递状态在各处是同一份，任何一处修改，其他地方都看到新状态（其他已打开的标签页在刷新或重新查询后更新）。
 
-- **聊天页侧边栏改状态**：当前岗位卡片有「收藏 / 已投递 / 不考虑」按钮，再点一次取消，规则与岗位库、详情卡片相同。
+- **聊天页侧边栏改状态**：当前岗位卡片有「收藏」「已投递」「不考虑」三个按钮，再点一次取消，规则与岗位库、详情卡片相同。
 - **列表卡片显示状态**：搜索列表页中设过状态的岗位卡片显示状态标识，排在 Jet 结论或粗筛提示右侧、不遮挡；在右侧详情区改状态后，同页卡片标识即时更新。
 - **独立职位页自动标已投递**：在独立职位页自己点「立即沟通」，与搜索列表页一样自动标记已投递，约 8 秒内可撤销；相似岗位、推荐岗位区域里的按钮不处理。
 - **聊天中的岗位入库**：打开聊天时，Jet 在本机记下该岗位（只存岗位 ID、职位名、公司名），计入岗位库「全部岗位」，可以设状态、记 HR 实际情况；不判断、不调大模型、不占额度、不设状态。未判断时侧边栏提示「点「查看职位」获取详情并判断」。发给外部模型的内容没有变化。
@@ -174,7 +211,7 @@ uv run jet stats
 
 ### 行内修改状态与原位标注
 
-- 在列表中可直接点击状态按钮（收藏 / 已投递 / 不考虑 / 取消状态）修改岗位状态。
+- 在列表中可直接点击状态按钮（「收藏」「已投递」「不考虑」「取消状态」）修改岗位状态。
 - 修改后**该行留在原位不跳动**，方便连续整理：
   - 在具体状态标签（收藏/已投递/不考虑）下改为其他状态，原位标注「已改为 X，切换标签或刷新后移出本列表」；
   - 点击「取消状态」按钮时，原位标注「已取消状态，切换标签或刷新后移出本列表」；
@@ -267,7 +304,7 @@ uv run jet eval export-jobs --out ~/Library/Application\ Support/Jet/evals/jobs_
 uv run jet eval import-reference ~/Library/Application\ Support/Jet/evals/reference_labels.json --source model:gemini-3.8-flash-high
 ```
 
-逐条校验并导入模型生成的参考标注。评测时，参考答案按字段优先采用用户手动标注；若用户未标注该字段，则采用模型参考标注，并在评测报告中注明答案来源构成及“模型参考标注，非人工”提示。
+逐条校验并导入模型生成的参考标注。评测时，参考答案按字段优先采用用户手动标注；若用户未标注该字段，则采用模型参考标注，并在评测报告中注明答案来源构成及「模型参考标注，非人工」提示。
 
 ## 运行测试
 
